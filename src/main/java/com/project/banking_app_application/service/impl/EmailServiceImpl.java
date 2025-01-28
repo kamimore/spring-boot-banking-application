@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.project.banking_app_application.dto.EmailDetails;
 
+import lombok.AllArgsConstructor;
+
 @Service
 public class EmailServiceImpl implements EmailService{
 	
