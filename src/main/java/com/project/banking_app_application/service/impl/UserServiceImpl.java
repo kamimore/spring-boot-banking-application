@@ -10,6 +10,7 @@ import com.project.banking_app_application.dto.BankResponse;
 import com.project.banking_app_application.dto.CreditDebitRequest;
 import com.project.banking_app_application.dto.EmailDetails;
 import com.project.banking_app_application.dto.EnquiryRequest;
+import com.project.banking_app_application.dto.TransferRequest;
 import com.project.banking_app_application.dto.UserRequest;
 import com.project.banking_app_application.entity.User;
 import com.project.banking_app_application.repository.UserRepository;
@@ -145,6 +146,53 @@ public class UserServiceImpl implements UserService {
 								+ foundUser.getOtherName())
 						.accountBalance(foundUser.getAccountBalance()).accountNumber(foundUser.getAccountNumber())
 						.build())
+				.build();
+	}
+
+	@Override
+	public BankResponse transfer(TransferRequest request) {
+		boolean isSourceAccountExists = userRepository.existsByAccountNumber(request.getSourceAccountNumber());
+		boolean isDestinationAccountExists = userRepository
+				.existsByAccountNumber(request.getDestinationAccountNumber());
+
+		if (!isSourceAccountExists) {
+			return BankResponse.builder().responseCode(AccountUtils.SOURCE_ACCOUNT_NOT_EXISTS_CODE)
+					.responseMessage(AccountUtils.SOURCE_ACCOUNT_NOT_EXISTS_CODE_MESSAGE).accountInfo(null).build();
+		}
+
+		if (!isDestinationAccountExists) {
+			return BankResponse.builder().responseCode(AccountUtils.DESTINATION_ACCOUNT_NOT_EXISTS_CODE)
+					.responseMessage(AccountUtils.DESTINATION_ACCOUNT_NOT_EXISTS_CODE_MESSAGE).accountInfo(null)
+					.build();
+		}
+
+		User foundSourceAccountUser = userRepository.findByAccountNumber(request.getSourceAccountNumber());
+		if (foundSourceAccountUser.getAccountBalance().compareTo(request.getAmount()) == -1) {
+			return BankResponse.builder().responseCode(AccountUtils.INSUFFIENT_BALANCE_CODE)
+					.responseMessage(AccountUtils.INSUFFIENT_BALANCE_CODE_MESSAGE)
+					.accountInfo(AccountInfo.builder().accountName(foundSourceAccountUser.getFirstName() + " "
+							+ foundSourceAccountUser.getLastName() + " " + foundSourceAccountUser.getOtherName())
+							.accountBalance(foundSourceAccountUser.getAccountBalance())
+							.accountNumber(foundSourceAccountUser.getAccountNumber()).build())
+					.build();
+		}
+
+		foundSourceAccountUser
+				.setAccountBalance(foundSourceAccountUser.getAccountBalance().subtract(request.getAmount()));
+		userRepository.save(foundSourceAccountUser);
+
+		User foundDestinationAccountUser = userRepository.findByAccountNumber(request.getDestinationAccountNumber());
+		foundDestinationAccountUser
+				.setAccountBalance(foundDestinationAccountUser.getAccountBalance().add(request.getAmount()));
+
+		userRepository.save(foundDestinationAccountUser);
+
+		return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_CREDITED_CODE)
+				.responseMessage(AccountUtils.ACCOUNT_CREDITED_CODE_MESSAGE)
+				.accountInfo(AccountInfo.builder().accountName(foundDestinationAccountUser.getFirstName() + " "
+						+ foundDestinationAccountUser.getLastName() + " " + foundDestinationAccountUser.getOtherName())
+						.accountBalance(foundDestinationAccountUser.getAccountBalance())
+						.accountNumber(foundDestinationAccountUser.getAccountNumber()).build())
 				.build();
 	}
 
