@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public BankResponse createAccount(UserRequest userRequest) {
 
-		if (userRepository.existsByEmail(null)) {
+		if (userRepository.existsByEmail(userRequest.getEmail())) {
 			return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_EXISTS_CODE)
 					.responseMessage(AccountUtils.ACCOUNT_EXISTS_MESSAGE).accountInfo(null).build();
 		}
