@@ -9,6 +9,13 @@ public class AccountUtils {
 	
 	public static final String ACCOUNT_CREATION_SUCCESS = "002";
 	public static final String ACCOUNT_CREATION_SUCCESS_MESSAGE = "Account is created successfully";
+	
+	public static final String ACCOUNT_NOT_EXIST_CODE = "003";
+	public static final String ACCOUNT_NOT_EXIST_MESSAGE = "User is not available with this account number";
+	
+	public static final String ACCOUNT_FOUND_CODE = "004";
+	public static final String ACCOUNT_FOUND_CODE_MESSAGE = "User found with this account number";
+	
 
 	public static String generateAccountNumber() {
 		Year currentYear = Year.now();

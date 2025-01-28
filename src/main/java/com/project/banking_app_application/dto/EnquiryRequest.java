@@ -1,0 +1,16 @@
+package com.project.banking_app_application.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class EnquiryRequest {
+	
+	private String accountNumber;
+	
+}
