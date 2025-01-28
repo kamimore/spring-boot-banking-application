@@ -14,13 +14,22 @@ import com.project.banking_app_application.dto.TransferRequest;
 import com.project.banking_app_application.dto.UserRequest;
 import com.project.banking_app_application.service.impl.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/user")
+@Tag(name="some text")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 
+	@Operation(summary="something idk", description="some description")
+	@ApiResponse(
+			responseCode = "201",
+			description="some description")
 	@PostMapping
 	public BankResponse createAccount(@RequestBody UserRequest userRequest) {
 		return userService.createAccount(userRequest);
