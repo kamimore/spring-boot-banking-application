@@ -1,7 +1,5 @@
 package com.project.banking_app_application.dto;
 
-import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +20,5 @@ public class UserRequest {
 	private String email;
 	private String phoneNumber;
 	private String alternativePhoneNumber;
-	private String status;
 }
 
