@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
 				.stateOfOrigin(userRequest.getStateOfOrigin()).accountNumber(AccountUtils.generateAccountNumber())
 				.accountBalance(BigDecimal.ZERO).email(userRequest.getEmail()).phoneNumber(userRequest.getPhoneNumber())
 				.password(passwordEncoder.encode(userRequest.getPassword()))
+				.role("USER")
 				.alternativePhoneNumber(userRequest.getAlternativePhoneNumber()).status("active").build();
 
 		User savedUser = userRepository.save(newUser);
