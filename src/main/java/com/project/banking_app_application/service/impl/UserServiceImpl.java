@@ -3,6 +3,7 @@ package com.project.banking_app_application.service.impl;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.banking_app_application.dto.AccountInfo;
@@ -20,19 +21,24 @@ import com.project.banking_app_application.repository.UserRepository;
 import com.project.banking_app_application.utility.AccountUtils;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Service
+@NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
-	TransactionService transactionService;
+	private TransactionService transactionService;
 
 	@Autowired
-	EmailService emailService;
+	private EmailService emailService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public BankResponse createAccount(UserRequest userRequest) {
@@ -46,6 +52,7 @@ public class UserServiceImpl implements UserService {
 				.gender(userRequest.getOtherName()).gender(userRequest.getGender()).address(userRequest.getAddress())
 				.stateOfOrigin(userRequest.getStateOfOrigin()).accountNumber(AccountUtils.generateAccountNumber())
 				.accountBalance(BigDecimal.ZERO).email(userRequest.getEmail()).phoneNumber(userRequest.getPhoneNumber())
+				.password(passwordEncoder.encode(userRequest.getPassword()))
 				.alternativePhoneNumber(userRequest.getAlternativePhoneNumber()).status("active").build();
 
 		User savedUser = userRepository.save(newUser);
@@ -220,5 +227,6 @@ public class UserServiceImpl implements UserService {
 						.accountNumber(foundDestinationAccountUser.getAccountNumber()).build())
 				.build();
 	}
+	
 
 }
