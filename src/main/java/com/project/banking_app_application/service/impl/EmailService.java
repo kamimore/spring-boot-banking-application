@@ -5,4 +5,6 @@ import com.project.banking_app_application.dto.EmailDetails;
 public interface EmailService {
 	
 	void sendEmailAlert(EmailDetails emailDetails);
+	
+	void sendEmailWithAttachement(EmailDetails emailDetails);
 }

@@ -1,7 +1,11 @@
 package com.project.banking_app_application.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,4 +34,8 @@ public class Transaction {
 	private BigDecimal amount;
 	private String accountNumber;
 	private String status;
+	@CreationTimestamp
+	private LocalDate createdAt;
+	@UpdateTimestamp
+	private LocalDate modifiedAt;
 }
